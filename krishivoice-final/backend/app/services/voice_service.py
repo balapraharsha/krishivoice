@@ -63,13 +63,12 @@ class VoiceService:
             # Configure recognition
             audio = speech.RecognitionAudio(content=audio_content)
             config = speech.RecognitionConfig(
-                encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-                sample_rate_hertz=16000,
-                language_code=full_lang_code,
-                enable_automatic_punctuation=True,
-                model="latest_long",
-                use_enhanced=True
-            )
+                    encoding=speech.RecognitionConfig.AudioEncoding.WEBM_OPUS,
+                    language_code=full_lang_code,
+                    enable_automatic_punctuation=True,
+                    model="latest_long",
+                    use_enhanced=True
+                )
             
             # Perform transcription
             response = self.speech_client.recognize(config=config, audio=audio)
@@ -87,33 +86,21 @@ class VoiceService:
             return transcription, confidence, language_code
             
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             print(f"Transcription error: {e}")
             return self._mock_transcription(language_code)
     
-    def translate_to_english(self, text: str, source_language: str = "hi") -> str:
-        """
-        Translate text to English
-        
-        Args:
-            text: Text to translate
-            source_language: Source language code
-        
-        Returns:
-            Translated text
-        """
-        if not self.enabled:
-            return text  # Return original if translation unavailable
-        
+    def translate_to_english(self, text: str, source_language: str) -> str:
+        if source_language == 'en':
+            return text
         try:
-            result = self.translate_client.translate(
-                text,
-                source_language=source_language,
-                target_language="en"
-            )
-            return result["translatedText"]
+            result = self.translate_client.translate(text, target_language='en')
+            return result['translatedText']
         except Exception as e:
             print(f"Translation error: {e}")
-            return text
+            return text  # just return original text, don't crash
+    
     
     def detect_language(self, text: str) -> str:
         """

@@ -90,9 +90,9 @@ const Dashboard = () => {
       <div className="metrics-grid">
         {[
           { label: 'Total Farmers',   value: stats?.total_farmers || 0,       icon: Users,         variant: 'primary', trend: '+12% this month' },
-          { label: 'Field Reports',   value: stats?.total_field_reports || 0,  icon: FileText,      variant: 'success', trend: 'Recorded observations' },
+          { label: 'Field Reports',   value: stats?.total_reports || 0,       icon: FileText,      variant: 'success', trend: 'Recorded observations' },
           { label: 'Field Reps',      value: stats?.total_field_reps || 0,     icon: Activity,      variant: 'warning', trend: 'Active territories' },
-          { label: 'Pest Outbreaks',  value: stats?.pest_outbreaks || 0,       icon: AlertTriangle, variant: 'danger',  trend: 'Requiring attention' },
+          { label: 'Pest Outbreaks',  value: stats?.active_pest_outbreaks || 0,       icon: AlertTriangle, variant: 'danger',  trend: 'Requiring attention' },
         ].map(({ label, value, icon: Icon, variant, trend }, i) => (
           <div key={label} className="metric-card" style={{ animationDelay: `${i * 0.1}s` }}>
             <div className="metric-header">
